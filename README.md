@@ -10,5 +10,6 @@ flag, you get the total, either in seconds (without the --millis flag) or millis
 
 There are two other flags: -h/--no-filename and -H/--with-filename.  These function
 as they do for the grep command.  If you only specify one file, by default the filename
-is not printed.  If you specify more than one file, the filenames are printed.  If you
-specify both, the filenames are printed (not sure why you would do this, though).
+is not printed.  If you specify more than one file, by default the filenames are printed.
+Note that if both --no-filename and --with-filename are provided, the filenames are printed
+(not sure why you would do this, though).
