@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/brothertoad/btu v1.2.0 // indirect
-	github.com/brothertoad/mp4atom v0.0.0-20220715190257-f97c3a1f0b80 // indirect
+	github.com/brothertoad/mp4atom v0.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/urfave/cli/v2 v2.11.0 // indirect
