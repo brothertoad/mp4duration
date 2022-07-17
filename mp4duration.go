@@ -11,11 +11,27 @@ import (
   "github.com/brothertoad/mp4atom"
 )
 
+var printFileNames bool = false
+
 func main() {
   app := &cli.App {
     Name: "mp4duration",
     Usage: "dumps the duration of mp4 or m4a file(s)",
+    UsageText: "mp4duration [options] file...",
     Action: mp4Duration,
+    HideHelp: true,
+    Flags: []cli.Flag {
+      &cli.BoolFlag {
+        Name: "with-filename",
+        Usage: "print the file names (default if more than one file)",
+        Aliases: []string{"H"},
+      },
+      &cli.BoolFlag {
+        Name: "no-filename",
+        Usage: "don't print the file names (default if only one file)",
+        Aliases: []string{"h"},
+      },
+    },
   }
   app.Run(os.Args)
 }
@@ -26,13 +42,28 @@ func mp4Duration(c *cli.Context) error {
     cli.ShowAppHelp(c)
     return nil
   }
+  printFileNames = setPrintFileNames(c, args)
   // Find the longest arg and create a padding string, to make the ouput a bit prettier.
   maxLength := findMaxLength(args)
   padding := strings.Repeat(" ", maxLength)
   for _, arg := range(args) {
-    fmt.Printf("%s:%s %s\n", arg, padding[0:(maxLength-len(arg))], getDuration(arg))
+    if printFileNames {
+      fmt.Printf("%s:%s %s\n", arg, padding[0:(maxLength-len(arg))], getDuration(arg))
+    } else {
+      fmt.Printf("%s\n", getDuration(arg))
+    }
   }
   return nil
+}
+
+func setPrintFileNames(c *cli.Context, args []string) bool {
+  if c.Bool("with-filename") {
+    return true
+  }
+  if c.Bool("no-filename") {
+    return false
+  }
+  return len(args) > 1
 }
 
 func getDuration(path string) string {
