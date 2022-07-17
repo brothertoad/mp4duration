@@ -12,6 +12,8 @@ import (
 )
 
 var printFileNames bool = false
+var printTotal = false
+var printMillis = false
 
 func main() {
   app := &cli.App {
@@ -31,6 +33,16 @@ func main() {
         Usage: "don't print the file names (default if only one file)",
         Aliases: []string{"h"},
       },
+      &cli.BoolFlag {
+        Name: "millis",
+        Usage: "include milliseconds",
+        Aliases: []string{"m"},
+      },
+      &cli.BoolFlag {
+        Name: "total",
+        Usage: "show time as total, rather than 00:00:00",
+        Aliases: []string{"t"},
+      },
     },
   }
   app.Run(os.Args)
@@ -43,6 +55,8 @@ func mp4Duration(c *cli.Context) error {
     return nil
   }
   printFileNames = setPrintFileNames(c, args)
+  printTotal = c.Bool("total")
+  printMillis = c.Bool("millis")
   // Find the longest arg and create a padding string, to make the ouput a bit prettier.
   maxLength := findMaxLength(args)
   padding := strings.Repeat(" ", maxLength)
@@ -84,6 +98,9 @@ func getDuration(path string) string {
 func formatDuration(units, timeUnit uint32) string {
   // Get the number of seconds, rounded.
   totalSecs := (units + timeUnit/2) / timeUnit
+  if printTotal {
+    return fmt.Sprintf("%5d", totalSecs)
+  }
   mins := totalSecs / 60
   secs := totalSecs % 60
   hours := mins / 60
