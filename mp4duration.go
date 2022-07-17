@@ -96,15 +96,20 @@ func getDuration(path string) string {
 }
 
 func formatDuration(units, timeUnit uint32) string {
-  // Get the number of seconds, rounded.
-  totalSecs := (units + timeUnit/2) / timeUnit
-  if printTotal {
-    return fmt.Sprintf("%5d", totalSecs)
+  // Get the number of units, rounded.
+  totalMillis := ((units + timeUnit/2) * 1000)/ timeUnit
+  if printTotal && printMillis {
+    return fmt.Sprintf("%7d", totalMillis)
   }
+  totalSecs := totalMillis / 1000
+  millis := totalMillis % 1000
   mins := totalSecs / 60
   secs := totalSecs % 60
   hours := mins / 60
   mins = mins % 60
+  if printMillis {
+    return fmt.Sprintf("%02d:%02d:%02d.%03d", hours, mins, secs, millis)
+  }
   return fmt.Sprintf("%02d:%02d:%02d", hours, mins, secs)
 }
 
