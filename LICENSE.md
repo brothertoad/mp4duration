@@ -1,6 +1,6 @@
 BSD 3-Clause License
 
-Copyright (c) 2022, brothertoad
+Copyright (c) 2022, S. F. Brogden
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
